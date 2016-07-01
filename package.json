@@ -1,0 +1,27 @@
+{
+  "name": "node-dummy-api",
+  "version": "1.0.0",
+  "author": "Délio Amaral",
+  "license": "Apache-2.0",
+  "description": "Example that shows how to add ExpressJS routes at runtime",
+  "main": "bin/server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cloudoki/node-dummy-api"
+  },
+  "engines": {
+    "node": ">=4.2.5"
+  },
+  "os": [
+    "linux"
+  ],
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "json-server": "^0.8.14",
+    "winston": "^2.2.0"
+  },
+  "scripts": {
+    "start": "node bin/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
