@@ -1,5 +1,5 @@
 # Node Dummy API
-Node application tha will generate endpoint to use with defined dummy data.
+Node application that will generate endpoint to use with defined dummy data.
 
 ## Configuring
 Add the dummy collections you want into `db/db.json` then you'll be able to use CRUD in that collections.
