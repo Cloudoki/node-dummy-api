@@ -1,42 +1,72 @@
 var log         = require('../lib/logger')(__filename),
     jsonServer  = require('json-server'),
-    server      = jsonServer.create(),
-    router      = jsonServer.router('db/db.json'),
-    db          = router.db,
-    middlewares = jsonServer.defaults(),
-    port        = 8080;
+    enableDestroy = require('server-destroy'),
+    app         = undefined,
+    db_file     = undefined,
+    router      = undefined,
+    db          = undefined,
+    middlewares = undefined,
+    port        = 8080,
+    OK          = 200,
+    CONFLICT    = 409,
+    server      = undefined;
 
-// Set default middlewares (logger, static, cors and no-cache)
-server.use(middlewares);
+function start() {
+  app         = jsonServer.create();
+  db_file     = 'db/db.json';
+  router      = jsonServer.router(db_file);
+  db          = router.db;
+  middlewares = jsonServer.defaults();
 
-server.use(jsonServer.rewriter({
-  '/api/': '/'
-}));
+  // Set default middlewares (logger, static, cors and no-cache)
+  app.use(middlewares);
 
-// Add custom collection
-server.post('/newcollection/:collection', function (req, res) {
-  var result = "No new collection created";
-  if(db[req.params.collection] == null) {
-    db[req.params.collection] = [];
-    db.write();
-    result = "Created new collection " + req.params.collection;
-  }
-  res.send({"message": result}).end();
-});
+  app.use(jsonServer.rewriter({
+    '/api/': '/'
+  }));
 
-// hello world test
-server.get('/hello', function (req, res) {
-  log.info(req.body);
-  res.send({"hello": "world"}).end();
-});
+  // Add custom collection
+  app.post('/newcollection/:collection', function (req, res) {
+    var dbData = db.getState();
+    var result = "Already exists. No new collection created.";
 
-// Use default router
-server.use(router);
-server.listen(port, function() {
-  log.info("Server listening to requests at port:", port);
-});
+    var status = CONFLICT;
+
+    if(dbData[req.params.collection] == null) {
+      dbData[req.params.collection] = [];
+      result = "Created new collection " + req.params.collection;
+      db.setState(dbData);
+      db.write();
+      status = OK;
+    }
+    res.status(status).send({"message": result}).end();
+
+    if(status = OK) {
+      server && server.destroy();
+      start();
+    }
+  });
+
+  // hello world test
+  app.get('/hello', function (req, res) {
+    log.info(req.body);
+    res.send({"hello": "world"}).end();
+  });
+
+  // Use default router
+  app.use(router);
+
+  // start listening
+  server = app.listen(port, function() {
+    log.info("Server listening to requests at port:", port);
+  });
+
+  enableDestroy(server);
+}
+
+start();
 
 process.on('SIGINT', function() {
-    log.info("Closing app...");
-    setTimeout(function(){ process.exit(0); }, 1500);
+  log.info("Closing app...");
+  process.exit(0);
 });

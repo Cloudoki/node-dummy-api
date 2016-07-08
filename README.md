@@ -9,6 +9,14 @@ Add the dummy collections you want into `db/db.json` then you'll be able to use 
 ```javascript
 {
   "users": [
+    {
+      "id": 1,
+      "first_name": "Steven",
+      "last_name": "Gutierrez",
+      "username": "sgutierrez0",
+      "gender": "Male",
+      "email": "sgutierrez0@instagram.com"
+    }
   ]
 }
 ```
@@ -33,3 +41,6 @@ To check if it's working open your browser at `http://localhost:8080/api/hello`.
   hello: "world"
 }
 ```
+
+## Create new collections
+In order to create a new collection just access `/api/newcollection/:collection`.
