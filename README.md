@@ -33,7 +33,7 @@ $ npm run start
 ```
 
 ### Is it working?
-To check if it's working open your browser at `http://localhost:8080/api/hello`.
+To check if it's working open your browser at `http://localhost:8787/api/hello`.
 
 **Response:**
 ```javascript
