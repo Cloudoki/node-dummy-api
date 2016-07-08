@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "first_name": "Steven",
+      "last_name": "Gutierrez",
+      "username": "sgutierrez0",
+      "gender": "Male",
+      "email": "sgutierrez0@instagram.com"
+    },
+    {
+      "id": 2,
+      "first_name": "Antonio",
+      "last_name": "Peterson",
+      "username": "apeterson1",
+      "gender": "Male",
+      "email": "apeterson1@oakley.com"
+    },
+    {
+      "id": 3,
+      "first_name": "Diana",
+      "last_name": "Campbell",
+      "username": "dcampbell2",
+      "gender": "Female",
+      "email": "dcampbell2@t.co"
+    }
+  ]
+}
