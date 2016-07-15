@@ -61,7 +61,7 @@ You can add new data to a collection by using a **POST** request to `api/:collec
 This will add the data with an id and return the data with the id.
 
 ### Update
-In order to update the data of a collection use a **UPDATE** request to `api/:collection/:id`.
+In order to update the data of a collection use a **PUT** or **PATCH** request to `api/:collection/:id`.
 
 ### Delete
 To delete do a **DELETE** request to `api/:collection/:id`.
