@@ -9,6 +9,7 @@ var log         = require('../lib/logger')(__filename),
     port        = 8787,
     OK          = 200,
     CONFLICT    = 409,
+    NOTFOUND    = 404,
     server      = undefined;
 
 function start() {
@@ -17,6 +18,8 @@ function start() {
   router      = jsonServer.router(db_file);
   db          = router.db;
   middlewares = jsonServer.defaults();
+
+  log.info("Server starting...");
 
   // Set default middlewares (logger, static, cors and no-cache)
   app.use(middlewares);
@@ -39,6 +42,29 @@ function start() {
       db.write();
       status = OK;
     }
+    res.status(status).send({"message": result}).end();
+
+    if(status = OK) {
+      server && server.destroy();
+      start();
+    }
+  });
+
+  // Remove custom collection
+  app.delete('/newcollection/:collection', function (req, res) {
+    var dbData = db.getState();
+    var result = "That collection doesn't exists.";
+
+    var status = NOTFOUND;
+
+    if(dbData[req.params.collection]) {
+      delete dbData[req.params.collection];
+      result = "Collection deleted " + req.params.collection;
+      db.setState(dbData);
+      db.write();
+      status = OK;
+    }
+
     res.status(status).send({"message": result}).end();
 
     if(status = OK) {
